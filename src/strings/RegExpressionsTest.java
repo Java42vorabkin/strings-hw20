@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static strings.RegExpressions.*
-;class RegExpressionsTest {
+;
+
+import java.util.regex.PatternSyntaxException;class RegExpressionsTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -108,8 +110,8 @@ import static strings.RegExpressions.*
 		//7 digits that may or may not be separated by dash
 		assertTrue("+972-541234567".matches(mobileIsraelPhone()));
 		assertTrue("0541234567".matches(mobileIsraelPhone()));
-		assertTrue("074-1-2345-67".matches(mobileIsraelPhone()));
 		assertTrue("+972541234567".matches(mobileIsraelPhone()));
+		assertTrue("074-1-2345-67".matches(mobileIsraelPhone()));
 		assertTrue("+972  541234567".matches(mobileIsraelPhone()));
 	}
 	@Test
@@ -131,34 +133,50 @@ import static strings.RegExpressions.*
 		String actual = getStringWithoutSpaces(expr);
 		String expected = "20+10*2/100+4";
 		assertEquals(expected, actual);
-		
+		boolean except = false;
+		try {
+			expr.replaceAll("[", "");
+		} catch(PatternSyntaxException ex) {
+			except = true;
+		}
+		assertTrue(except);
 	}
 
 	private String getStringWithoutSpaces(String str) {
 		// TODO write this method based on the method replaceAll of the class String
-		return null;
+		return str.replaceAll("\\s+", "");
+		// Done
 	}
 	@Test
 	void splitTest () {
 		String expr = " 20 +10 * 2	/100 +4     ";
 		String [] operatorsExp = {"", "+", "*", "/", "+"};
-		assertEquals(operatorsExp, getOperatorsExpression(expr));
+		assertArrayEquals(operatorsExp, getOperatorsExpression(expr));
 		String [] operandsExp = {"20", "10", "2", "100", "4"};
-		assertEquals(operandsExp, getOperandsExpression(expr));
+		assertArrayEquals(operandsExp, getOperandsExpression(expr));
+		boolean except = false;
+		try {
+			expr.split("[");
+		} catch(PatternSyntaxException ex) {
+			except = true;
+		}
+		assertTrue(except);
 	}
 
-	private Object getOperandsExpression(String expr) {
+	private String[] getOperandsExpression(String expr) {
 		// TODO the method returns array of strings containing only the operands of the given expression
 		// see test. Based on the method split of the class String
-		return null;
+ 		String str = getStringWithoutSpaces(expr);
+ 		return str.split("[+*/-]");
+ 		//	Done
 	}
 
 	private String[] getOperatorsExpression(String expr) {
 		// TODO the method returns array of strings containing the operators of the given expression
 		// with empty string as the first string (see test)
 		//based on the method split of the class String
-		return null;
+ 		return expr.split("\\s*\\d*[^+*/-]");
+ 		// Done
 	}
-	
 
 }

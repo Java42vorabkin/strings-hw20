@@ -40,7 +40,14 @@ public static String arithmeticExpression() {
  */
 public static String mobileIsraelPhone() {
 	//TODO
-	return "";
+//	String regex = "(\\+972-?\\s*|0)(5\\d|7[2-7])(-?\\d){7}";
+	String regionCode = "(\\+972-?\\s*|0)";
+	String providerCode = "(5\\d|7[2-7])";
+	String customerNumber = "(-?\\d){7}";
+// 	String regex =  regionCode + providerCode + customerNumber;
+	String regex = String.format("%s%s%s", regionCode, providerCode, customerNumber);
+	return regex;
+	// Done
 }
 /**
  * 
@@ -50,7 +57,11 @@ public static String mobileIsraelPhone() {
  */
 public static String ipV4() {
 	//TODO
+	/*
 	 return "";
+	 */
+	String regex=String.format("((%s)\\.){3}(%s)", ipV4Part(), ipV4Part());
+	return regex;
 }
 
 }
